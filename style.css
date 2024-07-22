@@ -4,7 +4,7 @@
 
 :root {
     --cell-size: 100px;
-    --box-size: calc(var(--cell-size) * 0.85);
+    --box-size: calc(var(--cell-size) * 0.9);
 }
 
 body {
@@ -15,19 +15,24 @@ body {
 .gameBoard {
     width: 100vw;
     height: 100vh;
-
     display: grid;
     grid-template-columns: repeat(3, auto);
     justify-content: center;
     align-items: center;
     justify-items: center;
     align-content: center;
+    background-color: rgb(218, 217, 217);
 }
 
 .gameBoard > .cell {
     width: var(--cell-size);
     height: var(--cell-size);
     border: 2px solid black;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 .cell:first-child,
 .cell:nth-child(2),
@@ -47,4 +52,73 @@ body {
 .cell:nth-child(7),
 .cell:last-child {
     border-block-end: none;
+}
+
+/* creating 'X' and 'O' marks also hover effects*/
+/* x marks */
+.cell.x::before,
+.cell.x::after,
+.gameBoard.x > .cell:not(.x):not(.circle):hover::before,
+.gameBoard.x > .cell:not(.x):not(.circle):hover::after {
+    content: "";
+    width: calc(var(--box-size) * 0.2);
+    height: var(--box-size);
+    position: absolute;
+}
+
+.cell.x::before,
+.gameBoard.x > .cell:not(.x):not(.circle):hover::before {
+    transform: rotate(45deg);
+}
+
+.cell.x::after,
+.gameBoard.x > .cell:not(.x):not(.circle):hover::after {
+    transform: rotate(-45deg);
+}
+
+.cell.x::before,
+.cell.x::after {
+    background-color: rgb(102, 51, 153);
+}
+
+.gameBoard.x > .cell:not(.x):not(.circle):hover::before,
+.gameBoard.x > .cell:not(.x):not(.circle):hover::after {
+    background-color: rgb(102, 51, 153, 0.35);
+}
+
+/* 'O' marks */
+.cell.circle::before,
+.cell.circle::after,
+.gameBoard.circle >.cell:not(.x):not(.circle):hover::before, 
+.gameBoard.circle >.cell:not(.x):not(.circle):hover::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+}
+
+.cell.circle::before,
+.gameBoard.circle > .cell:not(.x):not(.circle):hover::before {
+    width: var(--box-size);
+    height: var(--box-size);
+}
+
+.cell.circle::before {
+    background-color: orange;
+}
+
+.gameBoard.circle > .cell:not(.x):not(.circle):hover::before {
+    background-color: rgb(255, 165, 0, 0.35);
+}
+
+.cell.circle::after,
+.gameBoard.circle > .cell:not(.x):not(.circle):hover::after {
+    width: calc(var(--box-size) * 0.7);
+    height: calc(var(--box-size) * 0.7);
+    background-color: rgb(218, 217, 217);
+}
+
+/* no action allowed on filled cells */
+.cell.x,
+.cell.circle {
+    cursor: not-allowed;
 }
