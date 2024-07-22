@@ -9,13 +9,14 @@
 
 body {
     margin: 0;
+    position: relative;
 }
 
 /* styling the game board */
 .gameBoard {
     width: 100vw;
     height: 100vh;
-    display: grid;
+    display: none;
     grid-template-columns: repeat(3, auto);
     justify-content: center;
     align-items: center;
@@ -121,4 +122,41 @@ body {
 .cell.x,
 .cell.circle {
     cursor: not-allowed;
+}
+
+/* styling game start */
+.gameStart {
+    background-color: rgb(218, 217, 217);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+}
+
+.gameStart h1 {
+    font-size: 3rem;
+    color: black;
+}
+
+.gameStart >button {
+    width: 130px;
+    padding: 0.25em 0.5em;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+.gameStart > button:hover {
+    color: white;
+    background-color: black;
+}
+
+button.versusPlayer {
+    margin-bottom: 0.25rem;
 }
