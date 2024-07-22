@@ -3,9 +3,48 @@
 }
 
 :root {
-
+    --cell-size: 100px;
+    --box-size: calc(var(--cell-size) * 0.85);
 }
 
 body {
     margin: 0;
+}
+
+/* styling the game board */
+.gameBoard {
+    width: 100vw;
+    height: 100vh;
+
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+}
+
+.gameBoard > .cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 2px solid black;
+}
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3) {
+    border-block-start: none;
+}
+
+.cell:nth-child(3n +1) {
+    border-inline-start: none;
+}
+
+.cell:nth-child(3n) {
+    border-inline-end: none;
+}
+
+.cell:nth-child(8),
+.cell:nth-child(7),
+.cell:last-child {
+    border-block-end: none;
 }
