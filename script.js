@@ -1,5 +1,6 @@
-const Game = (() => {
+const Boardgame = (() => {
 
+// change the interface to
     const startTheGame = () => {
         const startBtn = document.getElementById('startButton');
         startBtn.addEventListener('click', () => {
@@ -7,23 +8,54 @@ const Game = (() => {
             document.getElementById('gameStart').classList.remove('gameStart-show');
             document.getElementById('gameBoard').classList.add('gameBoard-show');
             ThePlay.play();
+            setHoverOnEmptyCells();
         })
         
         
     }
 
+// placing mark on the cell
+    const placeMarkOnCells = (cell, mark) => {
+        cell.classList.add(mark);
+    }
+
+// hover over empty cells
+    const setHoverOnEmptyCells = (mark) => {
+        const board = document.getElementById('gameBoard');
+        board.classList.remove('x');
+        board.classList.remove('circle');
+
+        if (mark === "x") {
+            board.classList.add('circle');
+        } else  {
+            board.classList.add('x')
+        }
+    }
+
     return{
         startTheGame,
+        placeMarkOnCells,
+        setHoverOnEmptyCells
     }
 
 })();
 
 const ThePlay = (() => {
+    const cellElements = document.querySelectorAll('[data-cell]');
     const players = [];
     let currentPlayer = 0;
+    const WINNING_CONDITIONS = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
 
    const play = () => {
-        const cellElements = document.querySelectorAll('[data-cell]');
         cellElements.forEach(cell => {
             cell.addEventListener('click', handleClick, {once: true});
         })
@@ -54,19 +86,26 @@ const ThePlay = (() => {
         let theCell = e.target;
         let mark = players[currentPlayer].mark
 
+        Boardgame.placeMarkOnCells(theCell, mark);
 
-        placeMark(theCell, mark);
+        if (checkWinner(mark) === true) {
+            document.getElementById('winningMessageWrapper').classList.add('show');
+        }
         switchPlayer();
-    }
-
-// place "x" or "o" mark on the cell
-    const placeMark = (cell, turn) => {
-        cell.classList.add(turn);
+        Boardgame.setHoverOnEmptyCells(mark);
     }
 
 // switch turn
     const switchPlayer = () => {
         return currentPlayer = currentPlayer === 0 ? 1 : 0;
+    }
+
+    const checkWinner = (mark) => {
+        return WINNING_CONDITIONS.some(combination => {
+            return combination.every(index => {
+                return cellElements[index].classList.contains(mark);
+            })
+        })
     }
 
     return {
@@ -85,4 +124,4 @@ const createPlayer = (name, mark) => {
     }
 }
 
-Game.startTheGame();
+Boardgame.startTheGame();
