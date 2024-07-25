@@ -22,6 +22,8 @@ const ThePlay = (() => {
     const players = [];
     const X_CLASS = 'x';
     const CIRCLE_CLASS = 'o';
+    let currentPlayer;
+    let nextPlayer;
 
    const play = () => {
         const cellElements = document.querySelectorAll('[data-cell]');
@@ -47,13 +49,25 @@ const ThePlay = (() => {
                 }
             }
         })
-        console.log(players);
+        
         return players;
     }
 
     const handleClick = (e) => {
-        let cell = e.target;
+        let theCell = e.target;
+        currentPlayer = players[0];
+        nextPlayer = players[1];
+        let mark = currentPlayer ? X_CLASS : CIRCLE_CLASS;
 
+
+        placeMark(theCell, mark);
+
+        switchPlayer();
+
+    }
+
+    const placeMark = (cell, turn) => {
+        cell.classList.add(turn);
     }
 
     return {
