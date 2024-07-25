@@ -20,10 +20,7 @@ const Game = (() => {
 
 const ThePlay = (() => {
     const players = [];
-    const X_CLASS = 'x';
-    const CIRCLE_CLASS = 'o';
-    let currentPlayer;
-    let nextPlayer;
+    let currentPlayer = 0;
 
    const play = () => {
         const cellElements = document.querySelectorAll('[data-cell]');
@@ -39,13 +36,13 @@ const ThePlay = (() => {
                 if (name.id === "player1") {
                     players.push(createPlayer("Player 1", "x"));
                 } else {
-                    players.push(createPlayer("Player 2", "o"));
+                    players.push(createPlayer("Player 2", "circle"));
                 }
             } else {
                 if (name.id === "player1") {
                     players.push(createPlayer(name.value, "x"));
                 } else {
-                    players.push(createPlayer(name.value, "o"));
+                    players.push(createPlayer(name.value, "circle"));
                 }
             }
         })
@@ -55,19 +52,21 @@ const ThePlay = (() => {
 
     const handleClick = (e) => {
         let theCell = e.target;
-        currentPlayer = players[0];
-        nextPlayer = players[1];
-        let mark = currentPlayer ? X_CLASS : CIRCLE_CLASS;
+        let mark = players[currentPlayer].mark
 
 
         placeMark(theCell, mark);
-
         switchPlayer();
-
     }
 
+// place "x" or "o" mark on the cell
     const placeMark = (cell, turn) => {
         cell.classList.add(turn);
+    }
+
+// switch turn
+    const switchPlayer = () => {
+        return currentPlayer = currentPlayer === 0 ? 1 : 0;
     }
 
     return {
