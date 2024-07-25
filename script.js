@@ -10,8 +10,7 @@ const Boardgame = (() => {
             ThePlay.play();
             setHoverOnEmptyCells();
         })
-        
-        
+    
     }
 
 // placing mark on the cell
@@ -32,10 +31,17 @@ const Boardgame = (() => {
         }
     }
 
+// show this round winner
+    const showWinner = (winner) => {
+        const winningTextMessage = document.querySelector('[winning-message-text]');
+        winningTextMessage.innerText = `${winner} Wins!`
+    }
+
     return{
         startTheGame,
         placeMarkOnCells,
-        setHoverOnEmptyCells
+        setHoverOnEmptyCells,
+        showWinner,
     }
 
 })();
@@ -90,6 +96,7 @@ const ThePlay = (() => {
 
         if (checkWinner(mark) === true) {
             document.getElementById('winningMessageWrapper').classList.add('show');
+            Boardgame.showWinner(players[currentPlayer].name);
         }
         switchPlayer();
         Boardgame.setHoverOnEmptyCells(mark);
