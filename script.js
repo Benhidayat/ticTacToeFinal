@@ -31,17 +31,10 @@ const Boardgame = (() => {
         }
     }
 
-// show this round winner
-    const showWinner = (winner) => {
-        const winningTextMessage = document.querySelector('[winning-message-text]');
-        winningTextMessage.innerText = `${winner} Wins!`
-    }
-
     return{
         startTheGame,
         placeMarkOnCells,
         setHoverOnEmptyCells,
-        showWinner,
     }
 
 })();
@@ -88,18 +81,22 @@ const ThePlay = (() => {
         return players;
     }
 
+// this function handles when click event happen in the board
     const handleClick = (e) => {
         let theCell = e.target;
         let mark = players[currentPlayer].mark
 
         Boardgame.placeMarkOnCells(theCell, mark);
 
-        if (checkWinner(mark) === true) {
-            document.getElementById('winningMessageWrapper').classList.add('show');
-            Boardgame.showWinner(players[currentPlayer].name);
+        if (checkWinner(mark)) {
+            showGameResult(false);
+        } else if (isDraw()) {
+            showGameResult(true);
+        } else {
+            switchPlayer();
+            Boardgame.setHoverOnEmptyCells(mark);
         }
-        switchPlayer();
-        Boardgame.setHoverOnEmptyCells(mark);
+        
     }
 
 // switch turn
@@ -107,11 +104,31 @@ const ThePlay = (() => {
         return currentPlayer = currentPlayer === 0 ? 1 : 0;
     }
 
+//return true if there was winner
     const checkWinner = (mark) => {
         return WINNING_CONDITIONS.some(combination => {
             return combination.every(index => {
                 return cellElements[index].classList.contains(mark);
             })
+        })
+    }
+
+//show the result of the game
+    const showGameResult = (draw) => {
+        const winningTextMessage = document.querySelector('[winning-message-text]');
+
+        if (draw) {
+            winningTextMessage.innerText = 'Draw!'
+        } else {
+            winningTextMessage.innerText = `${players[currentPlayer].name} Wins!`
+        }
+        document.getElementById('winningMessageWrapper').classList.add('show');
+    }
+
+// return true if the game is draw
+    const isDraw = () => {
+        return [...cellElements].every(cell => {
+            return cell.classList.contains(players[0].mark) || cell.classList.contains(players[1].mark);
         })
     }
 
@@ -123,7 +140,7 @@ const ThePlay = (() => {
 })();
 
 
-//
+// factory function to create players info
 const createPlayer = (name, mark) => {
     return {
         name,
