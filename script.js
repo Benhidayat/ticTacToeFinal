@@ -8,9 +8,20 @@ const Boardgame = (() => {
             document.getElementById('gameStart').classList.remove('gameStart-show');
             document.getElementById('gameBoard').classList.add('gameBoard-show');
             ThePlay.play();
-            setHoverOnEmptyCells();
         })
     
+    }
+
+// restart the game
+    const restartGame = () => {
+        const nextRound = document.getElementById('nextRound');
+        nextRound.addEventListener('click', ThePlay.play);
+} 
+
+//exit the game
+    const exitGame = () => {
+        const exitBtn = document.getElementById('exitGame');
+        exitBtn.addEventListener('click', ThePlay.resetPlayersInfo);
     }
 
 // placing mark on the cell
@@ -35,6 +46,8 @@ const Boardgame = (() => {
         startTheGame,
         placeMarkOnCells,
         setHoverOnEmptyCells,
+        restartGame,
+        exitGame,
     }
 
 })();
@@ -56,8 +69,16 @@ const ThePlay = (() => {
 
    const play = () => {
         cellElements.forEach(cell => {
+            cell.classList.remove(players[0].mark);
+            cell.classList.remove(players[1].mark);
+            cell.removeEventListener
             cell.addEventListener('click', handleClick, {once: true});
         })
+        document.getElementById('winningMessageWrapper').classList.remove('show');
+        Boardgame.setHoverOnEmptyCells();
+        console.log(players);
+
+
    }
 
    const getPlayerName = () => {
@@ -132,9 +153,30 @@ const ThePlay = (() => {
         })
     }
 
+// function to continue the game
+    const playNextRound = () => {
+        const nextRound = document.getElementById('nextRound');
+        nextRound.addEventListener('click', restartGame);
+    }
+
+// reset the players array and make it empty for next game
+    const resetPlayersInfo = () => {
+        cellElements.forEach(cell => {
+            cell.classList.remove(players[0].mark);
+            cell.classList.remove(players[1].mark);
+            cell.removeEventListener;
+        });
+        players.length = 0;
+        document.getElementById('gameBoard').classList.remove('gameBoard-show');
+        document.getElementById('winningMessageWrapper').classList.remove('show');
+        document.getElementById('gameStart').classList.add('gameStart-show');
+    }
+
     return {
         play,
         getPlayerName,
+        playNextRound,
+        resetPlayersInfo,
     }
 
 })();
@@ -149,3 +191,5 @@ const createPlayer = (name, mark) => {
 }
 
 Boardgame.startTheGame();
+Boardgame.restartGame();
+Boardgame.exitGame();
