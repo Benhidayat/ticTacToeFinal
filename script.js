@@ -53,8 +53,9 @@ const Boardgame = (() => {
 })();
 
 const ThePlay = (() => {
-    const cellElements = document.querySelectorAll('[data-cell]');
-    const players = [];
+    const cellElements = document.querySelectorAll('[data-cell]'); //targeting all the cells inside the board
+    const inputNames = document.querySelectorAll('.player'); //targeting input forms
+    const players = []; // array to store players
     let currentPlayer = 0;
     const WINNING_CONDITIONS = [
         [0, 1, 2],
@@ -82,7 +83,6 @@ const ThePlay = (() => {
    }
 
    const getPlayerName = () => {
-        const inputNames = document.querySelectorAll('.player');
         inputNames.forEach(name => {
             if (!name.value) {
                 if (name.id === "player1") {
@@ -161,12 +161,19 @@ const ThePlay = (() => {
 
 // reset the players array and make it empty for next game
     const resetPlayersInfo = () => {
+        //clear all marks in every cells
         cellElements.forEach(cell => {
             cell.classList.remove(players[0].mark);
             cell.classList.remove(players[1].mark);
             cell.removeEventListener;
         });
+        //reset input value after name submitted
+        inputNames.forEach(input => {
+            input.value = "";
+        })
+        //remove all the players
         players.length = 0;
+        //return the interface to start the game
         document.getElementById('gameBoard').classList.remove('gameBoard-show');
         document.getElementById('winningMessageWrapper').classList.remove('show');
         document.getElementById('gameStart').classList.add('gameStart-show');
